@@ -1,6 +1,7 @@
 var http = require('http');
 var handler = require('./request-handler');
 var initialize = require('./initialize.js');
+var x = require('../workers/htmlFetcher');
 
 // Why do you think we have this here?
 // HINT: It has to do with what's in .gitignore
@@ -15,5 +16,11 @@ if (module.parent) {
 } else {
   server.listen(port);
   console.log('Listening on http://' + ip + ':' + port);
+
+  var CronJob = require('cron').CronJob;
+
+  new CronJob('10 * * * * *', function() {
+    x.htmlFetcher();
+  }, null, true, 'America/Los_Angeles');
 }
 

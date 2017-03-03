@@ -22,7 +22,13 @@ exports.serveAssets = function(res, asset, callback) {
       throw err;
     }
 
-    res.end(data.toString());
+    if (asset === '/public/loading.html') {
+      res.writeHead(302, exports.headers);
+      res.end(data.toString());
+    } else {
+      res.writeHead(200, exports.headers);
+      res.end(data.toString());
+    }
 
     if (callback) {
       callback(data);
